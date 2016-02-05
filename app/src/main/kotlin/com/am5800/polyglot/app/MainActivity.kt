@@ -2,6 +2,7 @@ package com.am5800.polyglot.app
 
 import android.app.Activity
 import android.os.Bundle
+import android.speech.tts.TextToSpeech
 import android.support.design.widget.FloatingActionButton
 import android.support.design.widget.Snackbar
 import android.support.v4.app.Fragment
@@ -13,9 +14,11 @@ import android.support.v7.widget.Toolbar
 import android.view.*
 import android.widget.LinearLayout
 import android.widget.TextView
+import java.util.*
 
 class MainActivity : AppCompatActivity() {
   private val quizSource = QuizSource()
+  private var tts: TextToSpeech? = null
   /**
    * The [android.support.v4.view.PagerAdapter] that will provide
    * fragments for each of the sections. We use a
@@ -48,6 +51,18 @@ class MainActivity : AppCompatActivity() {
 
     val fab = findViewById(R.id.fab) as FloatingActionButton
     fab.setOnClickListener { view -> Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG).setAction("Action", null).show() }
+
+    tts = TextToSpeech(applicationContext, {
+      if (it != TextToSpeech.ERROR) {
+        tts!!.language = Locale.UK
+      }
+    })
+  }
+
+  fun speak(text: String) {
+    val tts = this.tts ?: return
+
+    tts.speak(text, TextToSpeech.QUEUE_FLUSH, null, null)
   }
 
 
@@ -119,6 +134,7 @@ class MainActivity : AppCompatActivity() {
       rootView.setOnClickListener {
         if (answer.visibility == View.INVISIBLE) {
           answer.visibility = View.VISIBLE
+          activity.speak(answer.text.toString())
         } else {
           val quiz = activity.nextQuiz()
           initTextViews(answer, quiz, question)
