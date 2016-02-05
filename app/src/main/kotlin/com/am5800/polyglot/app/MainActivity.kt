@@ -1,25 +1,21 @@
 package com.am5800.polyglot.app
 
+import android.app.Activity
+import android.os.Bundle
 import android.support.design.widget.FloatingActionButton
 import android.support.design.widget.Snackbar
-import android.support.v7.app.AppCompatActivity
-import android.support.v7.widget.Toolbar
-
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentPagerAdapter
 import android.support.v4.view.ViewPager
-import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.Menu
-import android.view.MenuItem
-import android.view.View
-import android.view.ViewGroup
-
+import android.support.v7.app.AppCompatActivity
+import android.support.v7.widget.Toolbar
+import android.view.*
+import android.widget.LinearLayout
 import android.widget.TextView
 
 class MainActivity : AppCompatActivity() {
-
+  private val quizSource = QuizSource()
   /**
    * The [android.support.v4.view.PagerAdapter] that will provide
    * fragments for each of the sections. We use a
@@ -52,7 +48,6 @@ class MainActivity : AppCompatActivity() {
 
     val fab = findViewById(R.id.fab) as FloatingActionButton
     fab.setOnClickListener { view -> Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG).setAction("Action", null).show() }
-
   }
 
 
@@ -86,17 +81,17 @@ class MainActivity : AppCompatActivity() {
     override fun getItem(position: Int): Fragment {
       // getItem is called to instantiate the fragment for the given page.
       // Return a PlaceholderFragment (defined as a static inner class below).
-      return PlaceholderFragment.newInstance(position + 1)
+      return PlaceholderFragment.newInstance()
     }
 
     override fun getCount(): Int {
       // Show 3 total pages.
-      return 3
+      return 1
     }
 
     override fun getPageTitle(position: Int): CharSequence? {
       when (position) {
-        0 -> return "SECTION 1"
+        0 -> return "Урок 1"
         1 -> return "SECTION 2"
         2 -> return "SECTION 3"
       }
@@ -109,32 +104,55 @@ class MainActivity : AppCompatActivity() {
    */
   class PlaceholderFragment : Fragment() {
 
+    private var mainActivity: MainActivity? = null
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-      val rootView = inflater!!.inflate(R.layout.fragment_main, container, false)
-      val textView = rootView.findViewById(R.id.section_label) as TextView
-      textView.text = getString(R.string.section_format, arguments.getInt(ARG_SECTION_NUMBER))
+      val rootView = inflater!!.inflate(R.layout.fragment_main, container, false) as LinearLayout
+      val question = rootView.findViewById(R.id.question) as TextView
+      val answer = rootView.findViewById(R.id.answer) as TextView
+
+      val activity = mainActivity!!
+      val currentQuiz = activity.nextQuiz()
+
+      initTextViews(answer, currentQuiz, question)
+
+      rootView.setOnClickListener {
+        if (answer.visibility == View.INVISIBLE) {
+          answer.visibility = View.VISIBLE
+        } else {
+          val quiz = activity.nextQuiz()
+          initTextViews(answer, quiz, question)
+        }
+      }
+
       return rootView
     }
 
-    companion object {
-      /**
-       * The fragment argument representing the section number for this
-       * fragment.
-       */
-      private val ARG_SECTION_NUMBER = "section_number"
+    private fun initTextViews(answer: TextView, currentQuiz: Quiz, question: TextView) {
+      question.text = currentQuiz.question
+      question.visibility = View.VISIBLE
 
-      /**
-       * Returns a new instance of this fragment for the given section
-       * number.
-       */
-      fun newInstance(sectionNumber: Int): PlaceholderFragment {
+      answer.text = currentQuiz.answer
+      answer.visibility = View.INVISIBLE
+    }
+
+    override fun onAttach(activity: Activity?) {
+      super.onAttach(activity)
+
+      mainActivity = activity as MainActivity
+    }
+
+    companion object {
+      fun newInstance(): PlaceholderFragment {
         val fragment = PlaceholderFragment()
         val args = Bundle()
-        args.putInt(ARG_SECTION_NUMBER, sectionNumber)
         fragment.arguments = args
         return fragment
       }
     }
+  }
+
+  private fun nextQuiz(): Quiz {
+    return quizSource.next()
   }
 }
