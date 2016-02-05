@@ -1,12 +1,15 @@
 buildscript {
+    ext.kotlin_version = '1.0.0-rc-1036'
     repositories {
         jcenter()
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:1.5.0'
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
     }
 }
 apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
 
 repositories {
     jcenter()
@@ -37,8 +40,8 @@ android {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
     testCompile 'junit:junit:4.12'
     compile 'com.android.support:appcompat-v7:22.+'
     compile 'com.android.support:design:22.+'
+    compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
 }
