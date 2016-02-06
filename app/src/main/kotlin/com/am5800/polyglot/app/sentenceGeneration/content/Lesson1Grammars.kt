@@ -120,4 +120,8 @@ class Lesson1Grammars {
   )
 
 
+  val grammars = listOf(
+          presentDeclaration, presentNegation, presentQuestion,
+          pastDeclaration, pastNegation, pastQuestion,
+          futureDeclaration, futureNegation, futureQuestion)
 }

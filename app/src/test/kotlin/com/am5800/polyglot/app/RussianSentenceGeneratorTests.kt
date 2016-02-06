@@ -1,9 +1,7 @@
 package com.am5800.polyglot.app
 
 
-import com.am5800.polyglot.app.sentenceGeneration.commonAttributes.Gender
-import com.am5800.polyglot.app.sentenceGeneration.commonAttributes.Number
-import com.am5800.polyglot.app.sentenceGeneration.commonAttributes.Person
+import com.am5800.polyglot.app.sentenceGeneration.content.KnownWords
 import com.am5800.polyglot.app.sentenceGeneration.content.Lesson1Grammars
 import com.am5800.polyglot.app.sentenceGeneration.english.Pronoun
 import com.am5800.polyglot.app.sentenceGeneration.russian.RussianSentenceGenerator
@@ -14,14 +12,19 @@ import org.junit.Test
 
 class RussianSentenceGeneratorTests {
   val generator = RussianSentenceGenerator()
-  val love = RussianVerb.define {
-    infinitive("любить")
-    present("люблю", "любишь", "любим", "любите", "любит", "любит", "любит", "любят")
-    past("любил", "любил", "любили", "любили", "любил", "любила", "любило", "любили")
-  }
-  val me = Pronoun("я", Person.First, Number.Singular, null)
-  val he = Pronoun("он", Person.Third, Number.Singular, Gender.Masculine)
+  val words = KnownWords()
+  val love = getVerb("любить")
+  val me = getPronoun("я")
+  val he = getPronoun("он")
   val grammars = Lesson1Grammars()
+
+  fun getVerb(inf: String): RussianVerb {
+    return words.words.map { it.russian as? RussianVerb }.filterNotNull().single { it.infinitive == inf }
+  }
+
+  fun getPronoun(value: String): Pronoun {
+    return words.words.map { it.russian as? Pronoun }.filterNotNull().single { it.value == value }
+  }
 
   @Test
   fun testPresentFirstPersonDeclaration() {
@@ -59,6 +62,11 @@ class RussianSentenceGeneratorTests {
     Assert.assertEquals("он не любит", sentence.toLowerCase())
   }
 
+  @Test
+  fun testHeDoesNotEat() {
+    val sentence = generator.generate(grammars.presentNegation.russian, listOf(he, getVerb("есть")))
+    Assert.assertEquals("он не ест", sentence.toLowerCase())
+  }
 
   @Test
   fun testFutureQuestion() {

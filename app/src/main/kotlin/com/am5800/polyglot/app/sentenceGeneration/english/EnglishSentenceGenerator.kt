@@ -1,15 +1,15 @@
 package com.am5800.polyglot.app.sentenceGeneration.english
 
 import com.am5800.polyglot.app.sentenceGeneration.*
+import com.am5800.polyglot.app.sentenceGeneration.commonAttributes.Number
 import com.am5800.polyglot.app.sentenceGeneration.commonAttributes.Person
-import com.am5800.polyglot.app.sentenceGeneration.commonAttributes.Transitivity
 
 
 class EnglishSentenceGenerator : SentenceGenerator {
   private class VisitResult(val str: String, val propagatedWord: Word?)
 
   private class GeneratorVisitor(private val words: List<Word>) : GeneratorRuleSetVisitor<VisitResult, Word?> {
-    private val auxDo = EnglishVerb("do", "did", "done", "doing", "does", Transitivity.Transitive)
+    private val auxDo = EnglishVerb("do", "did", "does")
 
     override fun visitLeaf(leafNode: LeafRuleNode, data: Word?): VisitResult {
       val tag = leafNode.tag
@@ -25,7 +25,7 @@ class EnglishSentenceGenerator : SentenceGenerator {
           return VisitResult(verb.infinitive, verb)
         }
         if (verbFlags.contains(VerbTagFlag.Present) && data is Pronoun) {
-          val form = if (data.person == Person.Third) verb.thirdPerson else verb.infinitive
+          val form = if (data.person == Person.Third && data.number == Number.Singular) verb.thirdPerson else verb.infinitive
 
           return VisitResult(form, verb)
         }

@@ -3,7 +3,6 @@ package com.am5800.polyglot.app
 import com.am5800.polyglot.app.sentenceGeneration.commonAttributes.Gender
 import com.am5800.polyglot.app.sentenceGeneration.commonAttributes.Number
 import com.am5800.polyglot.app.sentenceGeneration.commonAttributes.Person
-import com.am5800.polyglot.app.sentenceGeneration.commonAttributes.Transitivity
 import com.am5800.polyglot.app.sentenceGeneration.content.Lesson1Grammars
 import com.am5800.polyglot.app.sentenceGeneration.english.EnglishSentenceGenerator
 import com.am5800.polyglot.app.sentenceGeneration.english.EnglishVerb
@@ -13,7 +12,7 @@ import org.junit.Test
 
 class EnglishSentenceGeneratorTests {
   val generator = EnglishSentenceGenerator()
-  val love = EnglishVerb("love", "loved", "loved", "loving", "loves", Transitivity.Transitive)
+  val love = EnglishVerb("love", "loved", "loves")
   val me = Pronoun("I", Person.First, Number.Singular, null)
   val he = Pronoun("he", Person.Third, Number.Singular, Gender.Masculine)
   val grammars = Lesson1Grammars()

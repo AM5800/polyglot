@@ -8,6 +8,8 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.TextView
+import com.am5800.polyglot.app.sentenceGeneration.content.KnownWords
+import com.am5800.polyglot.app.sentenceGeneration.content.Lesson1Grammars
 
 class MainActivity : AppCompatActivity() {
   override fun onCreate(savedInstanceState: Bundle?) {
@@ -21,7 +23,7 @@ class MainActivity : AppCompatActivity() {
     val question = findViewById(R.id.question) as TextView
     val answer = findViewById(R.id.answer) as TextView
 
-    val quizSource = QuizSource()
+    val quizSource = QuizSource(KnownWords().words, Lesson1Grammars().grammars)
 
     initTextViews(answer, quizSource.next(), question)
 

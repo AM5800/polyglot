@@ -26,10 +26,14 @@ class RussianVerb(private val definition: RussianVerbDefinition) : Word {
             weForm: String,
             youForm: String,
             heForm: String,
-            sheForm: String,
-            itForm: String,
             theyForm: String) {
-      put(RussianTime.Present, iForm, thouForm, weForm, youForm, heForm, sheForm, itForm, theyForm)
+      put(RussianTime.Present, iForm, thouForm, weForm, youForm, heForm, heForm, heForm, theyForm)
+    }
+
+    fun present(str: String) {
+      val parts = str.split(",").map { it.trim() }
+      if (parts.size != 6) throw Exception("invalid format: " + str)
+      present(parts[0], parts[1], parts[2], parts[3], parts[4], parts[5])
     }
 
     private fun put(time: RussianTime,
@@ -56,14 +60,16 @@ class RussianVerb(private val definition: RussianVerbDefinition) : Word {
 
     fun past(
             iForm: String,
-            thouForm: String,
             weForm: String,
-            youForm: String,
-            heForm: String,
             sheForm: String,
-            itForm: String,
-            theyForm: String) {
-      put(RussianTime.Past, iForm, thouForm, weForm, youForm, heForm, sheForm, itForm, theyForm)
+            itForm: String) {
+      put(RussianTime.Past, iForm, iForm, weForm, weForm, iForm, sheForm, itForm, weForm)
+    }
+
+    fun past(str: String) {
+      val parts = str.split(",").map { it.trim() }
+      if (parts.size != 4) throw Exception("invalid format: " + str)
+      past(parts[0], parts[1], parts[2], parts[3])
     }
 
     fun future(
@@ -79,7 +85,8 @@ class RussianVerb(private val definition: RussianVerbDefinition) : Word {
     }
 
     fun by(number: Number, person: Person, time: RussianTime, gender: Gender?): String {
-      return table[Key(number, person, time, gender)]!!
+      val result = table[Key(number, person, time, gender)] ?: return inf
+      return result
     }
   }
 
