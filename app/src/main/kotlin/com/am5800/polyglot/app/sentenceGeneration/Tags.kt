@@ -14,10 +14,10 @@ enum class VerbTagFlag {
   Future
 }
 
-open class VerbTag(val verbTagFlag: VerbTagFlag = VerbTagFlag.Infinitive) : GeneratorTag
+open class VerbTag(val transitivity: Transitivity, val verbTagFlag: VerbTagFlag = VerbTagFlag.Infinitive) : GeneratorTag
 
 open class LiteralTag(val value: String) : GeneratorTag
 
 class SpaceTag : LiteralTag(" ")
 
-class AuxDoTag(verbTagFlag: VerbTagFlag = VerbTagFlag.Infinitive) : VerbTag(verbTagFlag)
+class AuxDoTag(verbTagFlag: VerbTagFlag = VerbTagFlag.Infinitive) : VerbTag(Transitivity.Transitive, verbTagFlag)

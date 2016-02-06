@@ -2,7 +2,7 @@ package com.am5800.polyglot.app.sentenceGeneration
 
 
 class SimpleEnglishSentenceGenerator() {
-  private val auxDo = Verb("do", "did", "done", "doing", "does")
+  private val auxDo = Verb("do", "did", "done", "doing", "does", Transitivity.Transitive)
 
   fun generate(rule: GeneratorSimpleRule, words: List<Word>): String {
 
@@ -19,7 +19,7 @@ class SimpleEnglishSentenceGenerator() {
       } else if (tag is VerbTag) {
         val verb =
                 if (tag is AuxDoTag) auxDo
-                else words.single { it is Verb } as Verb
+                else words.single { it is Verb && it.transitivity == tag.transitivity } as Verb
         if (tag.verbTagFlag == VerbTagFlag.Present) {
           result.append(fromPronoun(verb, pronoun))
         } else {
