@@ -1,6 +1,7 @@
 package com.am5800.polyglot.app
 
 import com.am5800.polyglot.app.sentenceGeneration.*
+import com.am5800.polyglot.app.sentenceGeneration.Number
 import com.am5800.polyglot.app.sentenceGeneration.english.EnglishSentenceGenerator
 import com.am5800.polyglot.app.sentenceGeneration.english.EnglishVerb
 import com.am5800.polyglot.app.sentenceGeneration.english.Pronoun
@@ -10,8 +11,8 @@ import org.junit.Test
 class EnglishSentenceGeneratorTests {
   val generator = EnglishSentenceGenerator()
   val love = EnglishVerb("love", "loved", "loved", "loving", "loves", Transitivity.Transitive)
-  val me = Pronoun("I", Person.First)
-  val he = Pronoun("he", Person.Third)
+  val me = Pronoun("I", Person.First, Number.Singular, null)
+  val he = Pronoun("he", Person.Third, Number.Singular, Gender.Masculine)
 
   val presentNegation = GeneratorRuleSet.create {
     rootRule("%0 %1", PronounTag(), "VP", Head.IsLeft)
