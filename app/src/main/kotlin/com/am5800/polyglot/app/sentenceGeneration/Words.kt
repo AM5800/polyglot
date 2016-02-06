@@ -15,4 +15,4 @@ class Verb(val infinitive: String,
            val thirdPerson: String,
            val transitivity: Transitivity) : Word
 
-class Pronoun(val value: String) : Word
+class Pronoun(val value: String, val person: Person) : Word
