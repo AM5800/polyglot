@@ -1,9 +1,9 @@
 package com.am5800.polyglot.app.sentenceGeneration.russian
 
-import com.am5800.polyglot.app.sentenceGeneration.Gender
-import com.am5800.polyglot.app.sentenceGeneration.Number
-import com.am5800.polyglot.app.sentenceGeneration.Person
 import com.am5800.polyglot.app.sentenceGeneration.Word
+import com.am5800.polyglot.app.sentenceGeneration.commonAttributes.Gender
+import com.am5800.polyglot.app.sentenceGeneration.commonAttributes.Number
+import com.am5800.polyglot.app.sentenceGeneration.commonAttributes.Person
 
 
 class RussianVerb(private val definition: RussianVerbDefinition) : Word {

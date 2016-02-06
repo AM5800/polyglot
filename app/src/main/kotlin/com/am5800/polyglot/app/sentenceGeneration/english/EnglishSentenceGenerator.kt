@@ -1,6 +1,8 @@
 package com.am5800.polyglot.app.sentenceGeneration.english
 
 import com.am5800.polyglot.app.sentenceGeneration.*
+import com.am5800.polyglot.app.sentenceGeneration.commonAttributes.Person
+import com.am5800.polyglot.app.sentenceGeneration.commonAttributes.Transitivity
 
 
 class EnglishSentenceGenerator : SentenceGenerator {

@@ -4,12 +4,6 @@ import java.util.*
 
 interface GeneratorTag
 
-enum class Person {
-  First,
-  Second,
-  Third,
-}
-
 open class PronounTag() : GeneratorTag
 
 enum class VerbTagFlag {

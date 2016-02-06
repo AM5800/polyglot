@@ -1,7 +1,10 @@
 package com.am5800.polyglot.app.sentenceGeneration.english
 
-import com.am5800.polyglot.app.sentenceGeneration.*
-import com.am5800.polyglot.app.sentenceGeneration.Number
+import com.am5800.polyglot.app.sentenceGeneration.Word
+import com.am5800.polyglot.app.sentenceGeneration.commonAttributes.Gender
+import com.am5800.polyglot.app.sentenceGeneration.commonAttributes.Number
+import com.am5800.polyglot.app.sentenceGeneration.commonAttributes.Person
+import com.am5800.polyglot.app.sentenceGeneration.commonAttributes.Transitivity
 
 class EnglishVerb(val infinitive: String,
                   val past: String,
