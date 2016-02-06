@@ -1,10 +1,5 @@
 package com.am5800.polyglot.app.sentenceGeneration
 
-enum class HeadNode {
-  Left,
-  Right
-}
-
 class GeneratorRuleSet(private val rootNode: RuleNode) {
   interface RuleNode {
     fun <T> visit(visitor: GeneratorRuleSetVisitor<T>): T

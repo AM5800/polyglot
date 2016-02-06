@@ -34,9 +34,5 @@ open class VerbTag(val verbTagFlags: EnumSet<VerbTagFlag> = EnumSet.of(VerbTagFl
   constructor(flag1: VerbTagFlag, flag2: VerbTagFlag) : this(EnumSet.of(flag1, flag2))
 }
 
-open class LiteralTag(val value: String) : GeneratorTag
-
-class SpaceTag : LiteralTag(" ")
-
 class AuxDoTag(verbTagFlags: EnumSet<VerbTagFlag>) : VerbTag(verbTagFlags)
 
