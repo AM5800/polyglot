@@ -3,93 +3,65 @@ package com.am5800.polyglot.app
 import com.am5800.polyglot.app.sentenceGeneration.*
 import org.junit.Assert
 import org.junit.Test
-import java.util.*
 
 
 class SimpleEnglishSentenceGeneratorTests {
   val generator = EnglishSentenceGenerator()
-  val love = Verb("love", "loved", "loved", "loving", "loves", Transitivity.Intransitive)
+  val love = Verb("love", "loved", "loved", "loving", "loves", Transitivity.Transitive)
   val me = Pronoun("I", Person.First)
   val he = Pronoun("he", Person.Third)
 
-  fun presentDeclaration(thirdPerson: Boolean): GeneratorRuleSet {
-    val verbFlags =
-            if (thirdPerson) EnumSet.of(VerbTagFlag.Present, VerbTagFlag.ThirdPerson)
-            else EnumSet.of(VerbTagFlag.Present)
-
-    val pronounTag =
-            if (thirdPerson) ThirdPersonPronounTag()
-            else FirstOrSecondPersonPronounTag()
-
-    return GeneratorRuleSet.create {
-      rootRule("%0 %1", pronounTag, VerbTag(verbFlags))
-    }
-  }
-
-
-  fun presentQuestion(thirdPerson: Boolean): GeneratorRuleSet {
-    val verbFlags =
-            if (thirdPerson) EnumSet.of(VerbTagFlag.Present, VerbTagFlag.ThirdPerson)
-            else EnumSet.of(VerbTagFlag.Present)
-
-    val pronounTag =
-            if (thirdPerson) ThirdPersonPronounTag()
-            else FirstOrSecondPersonPronounTag()
-
-    return GeneratorRuleSet.create {
-      rootRule("%0 %1?", AuxDoTag(verbFlags), "VP")
-      rule("VP", "%0 %1", pronounTag, VerbTag(VerbTagFlag.Infinitive))
-    }
-  }
-
-  fun presentNegation(thirdPerson: Boolean): GeneratorRuleSet {
-    val verbFlags =
-            if (thirdPerson) EnumSet.of(VerbTagFlag.Present, VerbTagFlag.ThirdPerson)
-            else EnumSet.of(VerbTagFlag.Present)
-
-    val pronounTag =
-            if (thirdPerson) ThirdPersonPronounTag()
-            else FirstOrSecondPersonPronounTag()
-
-    return GeneratorRuleSet.create {
-      rootRule("%0 %1", pronounTag, "VP")
-      rule("VP", "%0 not %1", AuxDoTag(verbFlags), VerbTag(VerbTagFlag.Infinitive))
-    }
-  }
-
   @Test
   fun testPresentFirstPersonDeclaration() {
-    val sentence = generator.generate(presentDeclaration(false), listOf(me, love))
+    val rules = GeneratorRuleSet.create {
+      rootRule("%0 %1", FirstOrSecondPersonPronounTag(), VerbTag(VerbTagFlag.Infinitive))
+    }
+    val sentence = generator.generate(rules, listOf(me, love))
     Assert.assertEquals("i love", sentence.toLowerCase())
   }
 
   @Test
   fun testPresentThirdPersonDeclaration() {
-    val sentence = generator.generate(presentDeclaration(true), listOf(he, love))
+    val rules = GeneratorRuleSet.create {
+      rootRule("%0 %1", ThirdPersonPronounTag(), VerbTag(VerbTagFlag.Present, VerbTagFlag.ThirdPerson))
+    }
+    val sentence = generator.generate(rules, listOf(he, love))
     Assert.assertEquals("he loves", sentence.toLowerCase())
   }
 
   @Test
   fun testPresentThirdPersonQuestion() {
-    val sentence = generator.generate(presentQuestion(true), listOf(he, love))
+    val rules = GeneratorRuleSet.create {
+      rootRule("does %0 %1?", ThirdPersonPronounTag(), VerbTag(VerbTagFlag.Infinitive))
+    }
+    val sentence = generator.generate(rules, listOf(he, love))
     Assert.assertEquals("does he love?", sentence.toLowerCase())
   }
 
   @Test
   fun testPresentFirstPersonQuestion() {
-    val sentence = generator.generate(presentQuestion(false), listOf(me, love))
+    val rules = GeneratorRuleSet.create {
+      rootRule("do %0 %1?", FirstOrSecondPersonPronounTag(), VerbTag(VerbTagFlag.Infinitive))
+    }
+    val sentence = generator.generate(rules, listOf(me, love))
     Assert.assertEquals("do i love?", sentence.toLowerCase())
   }
 
   @Test
   fun testPresentFirstPersonNegation() {
-    val sentence = generator.generate(presentNegation(false), listOf(me, love))
+    val rules = GeneratorRuleSet.create {
+      rootRule("%0 do not %1", FirstOrSecondPersonPronounTag(), VerbTag(VerbTagFlag.Infinitive))
+    }
+    val sentence = generator.generate(rules, listOf(me, love))
     Assert.assertEquals("i do not love", sentence.toLowerCase())
   }
 
   @Test
   fun testPresentThirdPersonNegation() {
-    val sentence = generator.generate(presentNegation(true), listOf(he, love))
+    val rules = GeneratorRuleSet.create {
+      rootRule("%0 does not %1", ThirdPersonPronounTag(), VerbTag(VerbTagFlag.Infinitive))
+    }
+    val sentence = generator.generate(rules, listOf(he, love))
     Assert.assertEquals("he does not love", sentence.toLowerCase())
   }
 
