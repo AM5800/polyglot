@@ -10,12 +10,7 @@ enum class Person {
   Third,
 }
 
-open class PronounTag(val person: EnumSet<Person>) : GeneratorTag
-
-class AnyPronounTag() : PronounTag(EnumSet.of(Person.First, Person.Second, Person.Third))
-class ThirdPersonPronounTag() : PronounTag(EnumSet.of(Person.Third))
-class FirstOrSecondPersonPronounTag() : PronounTag(EnumSet.of(Person.First, Person.Second))
-
+open class PronounTag() : GeneratorTag
 
 enum class VerbTagFlag {
   Infinitive,
@@ -34,5 +29,7 @@ open class VerbTag(val verbTagFlags: EnumSet<VerbTagFlag> = EnumSet.of(VerbTagFl
   constructor(flag1: VerbTagFlag, flag2: VerbTagFlag) : this(EnumSet.of(flag1, flag2))
 }
 
-class AuxDoTag(verbTagFlags: EnumSet<VerbTagFlag>) : VerbTag(verbTagFlags)
+class AuxDoTag(verbTagFlags: EnumSet<VerbTagFlag>) : VerbTag(verbTagFlags) {
+  constructor(flag: VerbTagFlag) : this(EnumSet.of(flag))
+}
 
