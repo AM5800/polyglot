@@ -95,7 +95,7 @@ class KnownWords {
       present("закрываю, закрываешь, закрываем, закрываете, закрывает, закрывают")
       past("закрывал, закрывали, закрывала, закрывало")
     }
-    val closeEnglish = EnglishWeakVerb("close")
+    val closeEnglish = EnglishVerb("close", "closed", "closes")
 
     val finishRussian = RussianVerb.define {
       infinitive("заканчивать")
