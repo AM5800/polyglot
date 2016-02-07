@@ -1,7 +1,6 @@
 package com.am5800.polyglot.app
 
 import android.os.Bundle
-import android.speech.tts.TextToSpeech
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.internal.widget.ContentFrameLayout
 import android.view.Menu
@@ -18,8 +17,6 @@ class MainActivity : AppCompatActivity() {
 
     val rootView = findViewById(android.R.id.content) as ContentFrameLayout
 
-    val tts = TextToSpeech(applicationContext, {})
-
     val question = findViewById(R.id.question) as TextView
     val answer = findViewById(R.id.answer) as TextView
 
@@ -30,7 +27,6 @@ class MainActivity : AppCompatActivity() {
     rootView.setOnClickListener {
       if (answer.visibility == View.INVISIBLE) {
         answer.visibility = View.VISIBLE
-        tts.speak(answer.text.toString(), TextToSpeech.QUEUE_FLUSH, null, null)
       } else {
         val quiz = quizSource.next()
         initTextViews(answer, quiz, question)
